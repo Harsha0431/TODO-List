@@ -42,9 +42,9 @@
     "skipLibCheck": true,
   },
   "include": [
-    "scripts/**/*.ts",
-    "utils/**/*.ts",
-    "service/**/*.ts",
+    "src/scripts/**/*.ts",
+    "src/utils/**/*.ts",
+    "src/service/**/*.ts",
     "envConfig.ts"
   ]
 }
