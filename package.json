@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-  "dependencies": {
+  "devDependencies": {
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }
