@@ -4,3 +4,14 @@
 	 --breakpoint-xs: 384px;
 }
 @source "./**/*.{html,js}";
+
+
+#add-todo-task__wrapper:focus{
+	width: 100%;
+}
+
+.focus\:w-full {
+    &:focus {
+        width: 100%;
+    }
+}

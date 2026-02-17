@@ -131,3 +131,40 @@ You are being evaluated as much for **how** you solve the problem as for **what*
 Good luck!
 
 ---
+```pgsql
+root
+│  index.html
+│  tsconfig.json
+│  package.json
+│
+└─ src
+   │
+   ├─ app/                 # App bootstrap & DOM entry
+   │   └─ main.ts
+   │
+   ├─ core/                # Global abstractions (no business logic)
+   │   └─ storage/
+   │       ├─ storage.interface.ts
+   │       └─ local-storage.service.ts
+   │
+   ├─ features/
+   │   └─ todo/
+   │       ├─ model/
+   │       │   └─ todo.type.ts
+   │       │
+   │       ├─ data/
+   │       │   └─ todo.repository.ts
+   │       │
+   │       ├─ logic/
+   │       │   └─ todo.service.ts
+   │       │
+   │       └─ ui/
+   │           └─ todo.controller.ts
+   │
+   ├─ shared/              # reusable pure helpers only
+   │   └─ utils/
+   │       └─ id.ts
+   │
+   └─ styles/
+       └─ index.css
+```

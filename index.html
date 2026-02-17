@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>todoist</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style src="/src/styles/index.css"></style>
-    <script src="/dist/scripts/index.js" type="module" defer></script>
+    <script src="/dist/src/scripts/index.js" type="module" defer></script>
+    <link rel="icon" href="/public/assets/logo.svg" type="image/svg" >
 
     <style type="text/tailwindcss">
         @theme {
@@ -29,16 +30,42 @@
         }
     </style>
 </head>
-<body>
-    <header>
-        <picture>
+<body class="w-screen min-h-screen overflow-x-hidden p-4 max-sm:px-2 flex flex-col text-text bg-gradient-to-br from-emerald-50 to-white">
+    <header class="flex justify-center items-center h-auto w-full overflow-hidden row-span-1">
+        <picture class="w-fit h-[clamp(64px,8dvw,72px)] object-contain">
+            <source class="" media="(min-width: 768px)" srcset="/public/assets/logo-large.svg" />
+            <img src="/public/assets/logo.svg" alt="Description of the image" class="max-md:aspect-square h-full w-auto" />
         </picture>
     </header>
 
-    <main>
-
+    <main class="flex-1 flex w-full justify-center items-start pt-12">
+        <div class="w-[clamp(768px,75dvw,1400px)] bg-card shadow-lg rounded-xl p-6 max-sm:p-4 border border-border flex flex-col gap-y-4">
+            <form id="add-todo-task" class="w-full relative flex justify-center">
+                <div id="add-todo-task__wrapper" class="md:w-[85%] focus:w-full w-full flex bg-bg rounded-xl shadow-md border-border border overflow-hidden">
+                    <input
+                        id="add-todo-task__title"
+                        name="title"
+                        type="text"
+                        class="w-full px-4 py-3 focus:ring-1 focus:ring-border focus:ring-offset-0 focus:outline-2 placeholder:text-text-secondary"
+                        placeholder="Task title"
+                        required
+                    >
+                    <div
+                        class="right-0 top-0 flex items-center h-full bg-primary text-white hover:bg-primary-hover transition-all"
+                    >
+                        <button
+                            class="cursor-pointer px-4 py-3 font-semibold"
+                            type="submit"
+                        >
+                            ADD
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <ul></ul>
+        </div>
     </main>
 
-    <footer></footer>
+    <footer class="row-span-1">Footer</footer>
 </body>
 </html>
