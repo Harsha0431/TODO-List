@@ -1,0 +1,23 @@
+{
+  "name": "task-management",
+  "version": "1.0.0",
+  "description": "Develop the  application using **SOLID**, **KISS**, **DRY**, and **YAGNI** principles. The tech stack is **HTML**, **TypeScript**, and **CSS** (no frameworks/library).",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tailwindcss -i ./styles/index.css -o ./src/output.css --minify",
+    "transpile": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@autocode.git.epam.com:polamarasetty_harshavardhan/task-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}
