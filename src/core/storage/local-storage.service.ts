@@ -22,7 +22,7 @@ export class LocalStorageService implements TodoDataStore {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
     }
 
-    get(id: string): TODO {
+    async get(id: string): Promise<TODO> {
         const todos = this.read();
         const todo = todos.find(t => t.id === id);
 
@@ -32,22 +32,24 @@ export class LocalStorageService implements TodoDataStore {
         return todo;
     }
 
-    getAll(): TODO[] {
+    async getAll(): Promise<TODO[]> {
         return this.read();
     }
 
-    add(data: TODO): void {
+    async add(data: TODO): Promise<TODO[]> {
         const todos = this.read();
 
         // prevent duplicate ids
         if (todos.some(t => t.id === data.id))
             throw new Error(`Todo with id "${data.id}" already exists`);
 
-        todos.push(data);
+        todos.unshift(data);
         this.write(todos);
+
+        return todos;
     }
 
-    updateStatus(task: TODO): TODO {
+    async updateStatus(task: TODO): Promise<TODO[]> {
         const todos: TODO[] = this.read();
 
         const index: number = todos.findIndex(t => t.id === task.id);
@@ -62,13 +64,15 @@ export class LocalStorageService implements TodoDataStore {
         };
 
         this.write(todos);
-        return todos[index];
+        return todos;
     }
 
-    delete(id: string): void {
+    async delete(id: string): Promise<TODO[]> {
         const todos = this.read();
         const filtered = todos.filter(t => t.id !== id);
 
         this.write(filtered);
+
+        return filtered;
     }
 }

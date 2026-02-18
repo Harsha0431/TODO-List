@@ -1,8 +1,8 @@
 import type { TODO } from '../model/todo.types';
 import type { TodoDataStore } from "../../../core/storage/storage.interface";
-import { LocalStorageService } from "../../../core/storage/local-storage.service";
+import { LocalStorageService } from "../../../core/storage/local-storage.service.js";
 
-
+// Cache
 export class TodoRepository {
     private store: TodoDataStore;
 
@@ -10,11 +10,11 @@ export class TodoRepository {
         this.store = store;
     }
 
-    getAll(): TODO[] {
+    async getAll(): Promise<TODO[]> {
         return this.store.getAll();
     }
 
-    getById(id: string): TODO | null {
+    async getById(id: string): Promise<TODO | null> {
         try {
             return this.store.get(id);
         } catch {
@@ -22,15 +22,15 @@ export class TodoRepository {
         }
     }
 
-    create(todo: TODO): void {
-        this.store.add(todo);
+    async create(todo: TODO): Promise<TODO[]> {
+        return this.store.add(todo);
     }
 
-    toggle(todo: TODO): TODO {
+    async toggle(todo: TODO): Promise<TODO[]> {
         return this.store.updateStatus(todo);
     }
 
-    remove(id: string): void {
-        this.store.delete(id);
+    async remove(id: string): Promise<TODO[]> {
+        return this.store.delete(id);
     }
 }

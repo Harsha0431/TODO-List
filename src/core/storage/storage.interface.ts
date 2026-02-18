@@ -2,12 +2,13 @@ import type { TODO } from '../../features/todo/model/todo.types'
 
 
 export interface TodoDataStore {
-    get(id: string): TODO;
-    getAll(): TODO[]
+    get(id: string): Promise<TODO>
     
-    updateStatus(task: TODO): TODO
+    getAll(): Promise<TODO[]>
+    
+    updateStatus(task: TODO): Promise<TODO[]>
 
-    add(data: TODO): void
+    add(data: TODO): Promise<TODO[]>
 
-    delete(id: string): void
+    delete(id: string): Promise<TODO[]>
 }

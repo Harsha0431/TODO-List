@@ -6,6 +6,10 @@
 @source "./**/*.{html,js}";
 
 
+button {
+    cursor: pointer;
+}
+
 #add-todo-task__wrapper:focus{
 	width: 100%;
 }
