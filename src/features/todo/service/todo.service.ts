@@ -17,12 +17,12 @@ export class TodoService {
         const cleanTitle = title.trim();
 
         if (!cleanTitle)
-            return null;
+            throw new Error("Please provide valid title for task");
 
         const todo: TODO = {
             id: generateId(),
             title: cleanTitle,
-            status: 'pending',
+            completed: false,
             createdAt: Date.now()
         };
 
@@ -34,12 +34,16 @@ export class TodoService {
         const todo = await this.repo.getById(id);
         if (!todo) return null;
 
-        todo.status = todo.status === 'completed' ? 'pending' : 'completed';
+        todo.completed = !todo.completed;
 
         return this.repo.toggle(todo);
     }
 
     async delete(id: string): Promise<TODO[]> {
         return this.repo.remove(id);
+    }
+
+    async search(title: string): Promise<TODO[]> {
+        return this.repo.search(title.trim());
     }
 }

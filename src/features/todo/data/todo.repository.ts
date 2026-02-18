@@ -33,4 +33,8 @@ export class TodoRepository {
     async remove(id: string): Promise<TODO[]> {
         return this.store.delete(id);
     }
+
+    async search(title: string): Promise<TODO[]> {
+        return this.store.search(title);
+    }
 }

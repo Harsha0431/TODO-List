@@ -11,4 +11,6 @@ export interface TodoDataStore {
     add(data: TODO): Promise<TODO[]>
 
     delete(id: string): Promise<TODO[]>
+
+    search(title: string): Promise<TODO[]>
 }

@@ -60,7 +60,7 @@ export class LocalStorageService implements TodoDataStore {
         
         todos[index] = {
             ...todoTask,
-            status: task.status
+            completed: task.completed
         };
 
         this.write(todos);
@@ -72,6 +72,13 @@ export class LocalStorageService implements TodoDataStore {
         const filtered = todos.filter(t => t.id !== id);
 
         this.write(filtered);
+
+        return filtered;
+    }
+
+    async search(title: string): Promise<TODO[]> {
+        const todos = this.read();
+        const filtered = todos.filter(t => t.title.toLowerCase().includes(title.toLowerCase()));
 
         return filtered;
     }

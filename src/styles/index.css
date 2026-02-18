@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @theme {
-	 --color-primary: #405FF2;
-	 --breakpoint-xs: 384px;
+	--breakpoint-xs: 384px;
 }
 @source "./**/*.{html,js}";
 
@@ -17,5 +16,11 @@ button {
 .focus\:w-full {
     &:focus {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #task-list-container {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 }
