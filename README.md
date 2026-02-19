@@ -14,157 +14,135 @@ This project assesses your ability to design and implement clean, maintainable, 
 
 ---
 
-### **Requirements**
-
-Build a web-based **Task Management App** using only **HTML**, **TypeScript**, and **CSS** (no frameworks).  
-Users should be able to:
-
-1. **View a list of tasks**
-2. **Add a new task**
-3. **Mark a task as completed**
-4. **(Optional, YAGNI consideration)** Filter tasks by status (all, completed, pending)
-
----
-
-### **Functional Details**
-
-#### **1. Task Structure**
-Each task should have:
-- An **ID** (unique)
-- **Title** (string)
-- **Completed** (boolean)
-
-#### **2. Features to Implement**
-- Show the current list of tasks (at least 5 dummy tasks initially)
-- Form to add a new task (only requires a title)
-- Ability to mark a task as completed (checkbox/button)
-- _(Optional) Dropdown or buttons to filter the list by All, Completed, or Pending_
-
----
-
-### **Technical Constraints**
-
-- **No external libraries** (e.g. React, Bootstrap, jQuery, etc.)
-- Use **TypeScript** for all logic and model code
-- Use **HTML** and **CSS** for layout and styling (keep styling simple)
-- All code should be modular and written with **SOLID**, **KISS**, **DRY**, and **YAGNI** in mind.
-
----
-
-### **Principles to Demonstrate**
-
-**1. SOLID**
-  - SRP: Classes/functions should have only one responsibility.
-  - OCP: Components should be easy to extend, not modify.
-  - LSP: Replacements (if any) should not break logic.
-  - ISP: If interfaces are used, keep them lean.
-  - DIP: Rely on abstraction where possible.
-
-**2. KISS** (“Keep It Simple, Stupid”)
-  - Write clear, direct, and easy-to-understand logic.
-
-**3. DRY** (“Don’t Repeat Yourself”)
-  - Avoid copy-pasting code; extract reusable code to functions or classes.
-
-**4. YAGNI** (“You Aren’t Gonna Need It”)
-  - Build only what is described, not what *might* be needed in the future. Only implement filtering if you believe it adds user value.
-
----
-
-### **Instructions**
-
-**1. Set up your project:**
-   - Create a new folder (e.g. `task-manager`)
-   - Create required files:  
-     - `index.html`
-     - `style.css`
-     - `app.ts` (TypeScript)
-   - Include your compiled JS in `index.html`.
-
-**2. Implement the UI:**
-   - Show a list of tasks with their titles and statuses.
-   - Add a form for entering new task titles.
-
-**3. Implement interactions:**
-   - Adding a new task updates the task list view.
-   - Marking a task as completed updates its state and view.
-
-**4. Code Quality:**
-   - Use clear interfaces/types for data models.
-   - Organize code into logical classes/modules (e.g. Task, TaskManager, UI).
-   - Each class/module should have a single, clear responsibility.
-   - Avoid unnecessary abstraction (YAGNI).
-   - Reuse code where appropriate (DRY).
-   - Keep logic simple and clear (KISS).
-
-**5. (Optional) Filtering:**
-   - Allow filtering tasks by status **only if you feel it improves usability**. Implement this in a way that is easy to extend.
-
----
-
-### **Deliverables**
-
-1. `index.html`
-2. `style.css`
-3. `app.ts` (and compiled `app.js`)
-4. A **README.md** (briefly explain your design choices related to SOLID, KISS, DRY, YAGNI.)
-
----
-
-### **Bonus**
-- Use simple comments to point out where you’ve applied SOLID/DRY/KISS/YAGNI in your code.
-
----
-
-## **Evaluation Criteria**
-- **Correctness:** Does the app meet the functional requirements?
-- **Code Quality:** Is the code clean, modular, and maintainable according to SOLID/KISS/DRY/YAGNI?
-- **Simplicity:** Is the solution as straightforward as possible?
-- **Reusability:** Is repeated logic extracted (DRY)?
-- **Overengineering:** Is unnecessary complexity or abstraction avoided (YAGNI)?
-
----
-
-## **Final Note**
-You are being evaluated as much for **how** you solve the problem as for **what** you build.  
-**Keep code readable, tested, practical, and well-structured.**  
-Good luck!
-
----
-```pgsql
-root
-│  index.html
-│  tsconfig.json
-│  package.json
+### Folder Structrure
+```
+C:.
+│   .gitignore
+│   index.html
+│   package-lock.json
+│   package.json
+│   README.md
+│   tsconfig.json
 │
-└─ src
-   │
-   ├─ app/                 # App bootstrap & DOM entry
-   │   └─ main.ts
-   │
-   ├─ core/                # Global abstractions (no business logic)
-   │   └─ storage/
-   │       ├─ storage.interface.ts
-   │       └─ local-storage.service.ts
-   │
-   ├─ features/
-   │   └─ todo/
-   │       ├─ model/
-   │       │   └─ todo.type.ts
-   │       │
-   │       ├─ data/
-   │       │   └─ todo.repository.ts
-   │       │
-   │       ├─ logic/
-   │       │   └─ todo.service.ts
-   │       │
-   │       └─ ui/
-   │           └─ todo.controller.ts
-   │
-   ├─ shared/              # reusable pure helpers only
-   │   └─ utils/
-   │       └─ id.ts
-   │
-   └─ styles/
-       └─ index.css
+├───dist
+│   └───src
+│       ├───constants
+│       │       formData.d.ts
+│       │       formData.d.ts.map
+│       │       formData.js
+│       │       formData.js.map
+│       │       formInputPlaceholderMessage.d.ts
+│       │       formInputPlaceholderMessage.d.ts.map
+│       │       formInputPlaceholderMessage.js
+│       │       formInputPlaceholderMessage.js.map
+│       │
+│       ├───core
+│       │   ├───storage
+│       │   │       local-storage.service.d.ts
+│       │   │       local-storage.service.d.ts.map
+│       │   │       local-storage.service.js
+│       │   │       local-storage.service.js.map
+│       │   │       storage.interface.d.ts
+│       │   │       storage.interface.d.ts.map
+│       │   │       storage.interface.js
+│       │   │       storage.interface.js.map
+│       │   │
+│       │   └───types
+│       │           response.type.d.ts
+│       │           response.type.d.ts.map
+│       │           response.type.js
+│       │           response.type.js.map
+│       │
+│       ├───features
+│       │   └───todo
+│       │       ├───data
+│       │       │       todo.repository.d.ts
+│       │       │       todo.repository.d.ts.map
+│       │       │       todo.repository.instance.d.ts
+│       │       │       todo.repository.instance.d.ts.map
+│       │       │       todo.repository.instance.js
+│       │       │       todo.repository.instance.js.map
+│       │       │       todo.repository.js
+│       │       │       todo.repository.js.map
+│       │       │
+│       │       ├───model
+│       │       │       todo.types.d.ts
+│       │       │       todo.types.d.ts.map
+│       │       │       todo.types.js
+│       │       │       todo.types.js.map
+│       │       │
+│       │       └───service
+│       │               todo.service.d.ts
+│       │               todo.service.d.ts.map
+│       │               todo.service.js
+│       │               todo.service.js.map
+│       │
+│       ├───scripts
+│       │       index.d.ts
+│       │       index.d.ts.map
+│       │       index.js
+│       │       index.js.map
+│       │
+│       └───utils
+│           │   debounce.d.ts
+│           │   debounce.d.ts.map
+│           │   debounce.js
+│           │   debounce.js.map
+│           │   formatDate.d.ts
+│           │   formatDate.d.ts.map
+│           │   formatDate.js
+│           │   formatDate.js.map
+│           │
+│           └───todo
+│                   filterAndSortTasks.d.ts
+│                   filterAndSortTasks.d.ts.map
+│                   filterAndSortTasks.js
+│                   filterAndSortTasks.js.map
+│                   generateId.d.ts
+│                   generateId.d.ts.map
+│                   generateId.js
+│                   generateId.js.map
+│
+├───public
+│   └───assets
+│           logo-large.svg
+│           logo.svg
+│
+└───src
+    ├───constants
+    │       formData.ts
+    │
+    ├───core
+    │   ├───storage
+    │   │       local-storage.service.ts
+    │   │       storage.interface.ts
+    │   │
+    │   └───types
+    │           response.type.ts
+    │
+    ├───features
+    │   └───todo
+    │       ├───data
+    │       │       todo.repository.instance.ts
+    │       │       todo.repository.ts
+    │       │
+    │       ├───model
+    │       │       todo.types.ts
+    │       │
+    │       └───service
+    │               todo.service.ts
+    │
+    ├───scripts
+    │       index.ts
+    │
+    ├───styles
+    │       index.css
+    │
+    └───utils
+        │   debounce.ts
+        │   formatDate.ts
+        │
+        └───todo
+                filterAndSortTasks.ts
+                generateId.ts
 ```
