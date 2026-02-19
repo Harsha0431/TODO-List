@@ -16,7 +16,6 @@ This project assesses your ability to design and implement clean, maintainable, 
 
 ### Folder Structrure
 ```
-C:.
 │   .gitignore
 │   index.html
 │   package-lock.json
