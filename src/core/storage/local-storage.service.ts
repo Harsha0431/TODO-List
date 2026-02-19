@@ -76,9 +76,16 @@ export class LocalStorageService implements TodoDataStore {
         return filtered;
     }
 
-    async search(title: string): Promise<TODO[]> {
+    async search(title: string, status: string = 'all'): Promise<TODO[]> {
         const todos = this.read();
-        const filtered = todos.filter(t => t.title.toLowerCase().includes(title.toLowerCase()));
+
+        const completed = status === 'completed';
+        const allTodos = status === 'all';
+
+        const filtered = todos.filter(t =>
+            t.title.toLowerCase().includes(title.toLowerCase()) &&
+            ((t.completed === completed) || allTodos)
+        );
 
         return filtered;
     }

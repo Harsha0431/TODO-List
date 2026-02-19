@@ -1,3 +1,4 @@
+import { formButtonLabels } from '../constants/formData.js';
 import type { TODO } from '../features/todo/model/todo.types';
 import { TodoService } from '../features/todo/service/todo.service.js';
 import debounce from '../utils/debounce.js';
@@ -8,12 +9,48 @@ const addNewTodoTaskFormContainer: HTMLFormElement | null = document.getElementB
 const todoListContainer: HTMLElement | null = document.getElementById("task-list-container");
 const formButtonGrp: HTMLElement | null = document.getElementById("form-btn-grp");
 const formTitleElement: HTMLElement | null = document.getElementById("add-todo-task__title");
+const formSearchStatusSelect: HTMLElement | null = document.getElementById("form-search-status");
 
 const todoService = new TodoService();
 
-
+let prevToastTimeoutId: number;
 function showMessage(message: string){
-    // TODO: Complete this
+    const messageContainer: HTMLElement | null = document.getElementById("message");
+    const toastContainer: HTMLElement | null = document.getElementById("toast-container");
+
+    if(messageContainer && messageContainer instanceof HTMLParagraphElement && toastContainer){
+        clearTimeout(prevToastTimeoutId);
+
+        messageContainer.textContent = message;
+        delete toastContainer.dataset.hidden;
+        
+        prevToastTimeoutId = setTimeout(()=>{
+            messageContainer.textContent = '';
+            toastContainer.dataset.hidden = 'true';
+        }, 5000);
+    }
+}
+
+function modifyInputPlaceholder(inputElement: HTMLInputElement, message: string){
+    inputElement.placeholder = message;
+}
+
+function getSeletedFormActionMode(): string {
+    if(!formButtonGrp) return "search";
+
+    const buttonsList: Element[] = Array.from(formButtonGrp.children);
+    let label = 'search';
+    buttonsList.every(button => {
+        if(button instanceof HTMLButtonElement){
+            if(button.dataset.selected == 'true'){
+                label = button.dataset.label ?? '';
+                return false;
+            }
+            return true;
+        }
+    });
+
+    return label;
 }
 
 function handleFormActionModeSelect(e: MouseEvent){
@@ -28,11 +65,13 @@ function handleFormActionModeSelect(e: MouseEvent){
     e.preventDefault();
 
     const buttonsList = Array.from(formButtonGrp.children);
+    const inputElement = document.getElementById("add-todo-task__title") as HTMLInputElement;
+    const closestButtonLabel: string = closestAction.dataset.label ?? '';
 
     buttonsList.forEach((button)=>{
         if(!(button instanceof HTMLButtonElement)) return;
         
-        if(button.dataset.label === closestAction.dataset.label){
+        if(button.dataset.label === closestButtonLabel){
             button.type = 'submit';
             button.dataset.selected = 'true';
         }
@@ -40,7 +79,15 @@ function handleFormActionModeSelect(e: MouseEvent){
             button.type = 'button';
             delete button.dataset.selected;
         }
-    })
+    });
+
+    let labelMessage = 'Search task by title or add a new task';
+    if(closestButtonLabel === 'add' || closestButtonLabel === 'search'){
+        labelMessage = formButtonLabels[closestButtonLabel];
+    }
+    
+    if(inputElement)
+        modifyInputPlaceholder(inputElement, labelMessage);
 }
 
 function createTodoTaskCard(clone: DocumentFragment, task: TODO): DocumentFragment {
@@ -71,10 +118,15 @@ function createTodoTaskCard(clone: DocumentFragment, task: TODO): DocumentFragme
     return clone;
 }
 
-function renderTodoListItems(data: TODO[]){
+function renderTodoListItems(data: TODO[], isSearching: boolean = true){
     try{
         // Sort data by date (i.e., createdAt)
         data = sortTasksByDate(data);
+
+        const formFilterStatus = getSelectedFormFilterStatus();
+        const showAllTasks = formFilterStatus === 'all';
+        const showCompletedTasks = formFilterStatus === 'completed';
+        data = data.filter( task => (task.completed === showCompletedTasks) || showAllTasks);
 
         if(!todoListContainer || !(todoListContainer instanceof HTMLUListElement))
             throw new Error("");
@@ -91,7 +143,15 @@ function renderTodoListItems(data: TODO[]){
             });
         }
         else{
-            // TODO: Show default no tasks
+            const noDataMessage: HTMLParagraphElement = document.createElement('p');
+            if (isSearching)
+                noDataMessage.textContent = "No tasks match your search.";
+            else
+                noDataMessage.textContent = "No tasks yet. Create your first task to get started.";
+
+            noDataMessage.classList.add('text-warning')
+
+            fragment.appendChild(noDataMessage);
         }
 
         todoListContainer.innerHTML = '';
@@ -118,6 +178,31 @@ function getTitleFromFormData(): string{
     return title.toString();
 }
 
+function getFormData(): {title: string, status: string} {
+    if(!addNewTodoTaskFormContainer)
+        throw new Error("No form container found");
+
+    const formData: FormData = new FormData(addNewTodoTaskFormContainer);
+    const title = formData.get("title");
+    if(title == null)
+        throw new Error("Failed to read new task title.");
+    
+    const filter =getSelectedFormFilterStatus();
+
+    return {
+        title: title.toString(),
+        status: filter.toString()
+    };
+}
+
+function getSelectedFormFilterStatus(): string{
+    if(formSearchStatusSelect && formSearchStatusSelect instanceof HTMLSelectElement){
+        return formSearchStatusSelect.value;
+    }
+
+    return 'all';
+}
+
 async function handleCreateNewTask(e: SubmitEvent){
     try{
         if(!addNewTodoTaskFormContainer)
@@ -125,8 +210,6 @@ async function handleCreateNewTask(e: SubmitEvent){
     
         const formData = new FormData(addNewTodoTaskFormContainer);
         const title = getTitleFromFormData();
-        if(!title)
-            throw new Error("Failed to read new task title.");
     
         const updatedTaskList = await todoService.create(title.toString());
 
@@ -146,11 +229,15 @@ async function handleCreateNewTask(e: SubmitEvent){
 }
 
 async function handleFromTaskSearch(value?: string) {
+    const formActionMode = getSeletedFormActionMode();
+    if(formActionMode !== 'search') return;
+
     if(typeof value !== 'string' && typeof value !== 'undefined') return;
     
     try{
-        const searchQuery = value ?? getTitleFromFormData();
-        const relatedData: TODO[] = await todoService.search(searchQuery);
+        const formData = getFormData();
+        const searchQuery = value ?? formData.title;
+        const relatedData: TODO[] = await todoService.search(searchQuery, formData.status);
         renderTodoListItems(relatedData);
     }
     catch(err){
@@ -175,7 +262,7 @@ async function handleFormSubmit(e: SubmitEvent){
 
 async function loadTodoListTasks(){
     const data: TODO[] = await todoService.getTodos();
-    renderTodoListItems(data);
+    renderTodoListItems(data, false);
 }
 
 function loadData(){
@@ -189,7 +276,7 @@ function loadData(){
 async function deleteTodoTask(id: string){
     try{
         const updatedTasks: TODO[] = await todoService.delete(id);
-        renderTodoListItems(updatedTasks);
+        renderTodoListItems(updatedTasks, false);
     }
     catch(err){
         showMessage("Something went wrong: " + err);
@@ -261,6 +348,12 @@ if(formTitleElement && (formTitleElement instanceof HTMLInputElement)){
         const target = e.target as HTMLInputElement;
         debouncedSearch(target.value);
     });
+}
+
+if(formSearchStatusSelect && formSearchStatusSelect instanceof HTMLSelectElement){
+    formSearchStatusSelect.addEventListener('change', (e)=>{
+        handleFromTaskSearch('');
+    })
 }
 
 document.addEventListener('DOMContentLoaded', loadData);

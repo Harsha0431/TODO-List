@@ -43,7 +43,7 @@ export class TodoService {
         return this.repo.remove(id);
     }
 
-    async search(title: string): Promise<TODO[]> {
-        return this.repo.search(title.trim());
+    async search(title: string, status: string = 'all'): Promise<TODO[]> {
+        return this.repo.search(title.trim(), status);
     }
 }

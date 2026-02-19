@@ -34,7 +34,7 @@ export class TodoRepository {
         return this.store.delete(id);
     }
 
-    async search(title: string): Promise<TODO[]> {
-        return this.store.search(title);
+    async search(title: string, status: string = 'all'): Promise<TODO[]> {
+        return this.store.search(title, status);
     }
 }

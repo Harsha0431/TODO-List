@@ -30,7 +30,8 @@
         }
     </style>
 </head>
-<body class="w-screen min-h-screen overflow-x-hidden p-4 max-sm:px-2 flex flex-col text-text bg-gradient-to-br from-emerald-50 to-white">
+
+<body class="w-screen min-h-screen relative overflow-x-hidden p-4 max-sm:px-2 flex flex-col text-text bg-gradient-to-br from-emerald-50 to-white">
     <header class="flex justify-center items-center h-auto w-full overflow-hidden row-span-1">
         <picture class="w-fit h-[clamp(64px,8dvw,72px)] object-contain">
             <source class="" media="(min-width: 768px)" srcset="/public/assets/logo-large.svg" />
@@ -40,94 +41,127 @@
 
     <main class="flex-1 flex w-full justify-center items-start pt-12">
         <div class="w-[clamp(768px,75dvw,1400px)] bg-card shadow-lg rounded-xl p-6 max-sm:p-4 border border-border flex flex-col gap-y-4">
-            <form id="add-todo-task" class="w-full relative flex justify-center">
-                <div id="add-todo-task__wrapper" class="w-full flex max-sm:flex-col bg-bg rounded-xl shadow-md border-border border overflow-hidden">
-                    <input
-                        id="add-todo-task__title"
-                        name="title"
-                        type="text"
-                        class="w-full px-4 py-3 focus:ring-2 focus:ring-border focus:ring-inset outline-0 placeholder:text-text-secondary"
-                        placeholder="Task title"
-                        required
-                        maxlength="75"
-                        minlength="3"
-                    >
-                    <div
-                        id="form-btn-grp"
-                        class="flex items-center h-full transition-all divide-border"
-                    >
-                        <button
-                            class="px-4 py-3 font-semibold flex-1 flex w-full justify-center items-center hover:bg-bg data-[selected]:bg-primary data-[selected]:hover:bg-primary-hover data-[selected]:text-white"
-                            data-selected="true"
-                            type="submit"
-                            data-action="search-task"
-                            data-label="search"
+            <div class="flex flex-col gap-y-4 sticky top-2 z-10 backdrop-blur-md">
+                <form id="add-todo-task" class="w-full relative flex justify-center">
+                    <div id="add-todo-task__wrapper" class="w-full flex max-sm:flex-col bg-bg rounded-xl shadow-md border-border border overflow-hidden">
+                        <input
+                            id="add-todo-task__title"
+                            name="title"
+                            type="text"
+                            class="w-full px-4 py-3 focus:ring-2 focus:ring-border focus:ring-inset outline-0 placeholder:text-text-secondary"
+                            placeholder="Search tasks by title"
+                            required
+                            maxlength="75"
+                            minlength="3"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="size-6 max-sm:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                            </svg>
-                            <span class="sm:hidden">Search</span>
-                        </button>
-                        <button
-                            data-action="add-task"
-                            class="px-4 py-3 font-semibold flex-1 flex w-full justify-center items-center hover:bg-primary/10 data-[selected]:bg-primary data-[selected]:hover:bg-primary-hover data-[selected]:text-white"
-                            type="button"
-                            data-action="add-task"
-                            data-label="add"
+                        <div
+                            id="form-btn-grp"
+                            class="flex items-center h-full transition-all divide-border"
                         >
-                            <svg class="size-6 max-sm:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            <span class="sm:hidden">Add</span>
-                        </button>
+                            <button
+                                class="px-4 py-3 max-sm:px-2 max-sm:py-2 font-semibold flex-1 flex w-full justify-center items-center hover:bg-bg data-[selected]:bg-primary data-[selected]:hover:bg-primary-hover data-[selected]:text-white"
+                                data-selected="true"
+                                type="submit"
+                                data-action="search-task"
+                                data-label="search"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-6 max-sm:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                                <span class="sm:hidden">Search</span>
+                            </button>
+                            <button
+                                data-action="add-task"
+                                class="px-4 py-3 max-sm:px-3 max-sm:py-2 font-semibold flex-1 flex w-full justify-center items-center hover:bg-primary/10 data-[selected]:bg-primary data-[selected]:hover:bg-primary-hover data-[selected]:text-white"
+                                type="button"
+                                data-action="add-task"
+                                data-label="add"
+                            >
+                                <svg class="size-6 max-sm:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                <span class="sm:hidden">Add</span>
+                            </button>
+                        </div>
                     </div>
+                </form>
+
+                <div class="filter-container flex justify-end gap-x-1 items-center">
+                    <span>Show</span>
+                    
+                    <select id="form-search-status" name="search_status" class="w-fit border rounded-lg focus:outline-0 ">
+                        <option selected>all</option>
+                        <option>pending</option>
+                        <option>completed</option>
+                    </select>
+    
+                    <span>tasks</span>
                 </div>
-            </form>
+            </div>
 
             <div class="flex flex-col gap-y-2">
-                <p id="message"></p>
                 <ul id="task-list-container" class="grid grid-cols-3 gap-3 max-sm:grid-cols-2 max-[400]:grid-cols-1">
                 </ul>
             </div>
         </div>
     </main>
 
+    <!-- Fixed toast message -->
+    <article class="absolute top-2 right-0 z-20 px-2 flex justify-end">
+        <div id="toast-container" data-hidden="true" class="flex flex-col gap-y-1 bg-warning/10 text-warning text-card data-hidden:hidden p-2 rounded-md shadow">
+            <p class="font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 max-sm:size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                </svg>
+            </p>
+            <p id="message"></p>
+        </div>
+    </article>
+
+
     <template id="task-item-card">
         <li class="rounded-xl p-4 bg-bg shadow-md overflow-hidden">
             <article class="flex justify-between gap-x-1">
                 <div class="flex flex-col gap-y-2">
                     <h2 class="text-[clamp(16px,2dvw,20px)] font-semibold text-wrap break-all line-clamp-3"></h2>
-                    <div>
-                        <span class="flex">Created on:</span>
-                        <p class="text-[clamp(14px,1.6dvw,16px)]"></p>
+                    <div class="text-[clamp(14px,1.6dvw,16px)]">
+                        <span class="font-semibold">Created on:</span>
+                        <p></p>
                     </div>
                 </div>
+
                 <div class="button-grp flex flex-col justify-center gap-y-2">
-                    <button data-action="task-delete" class="text-danger order-2" aria-label="Delete Task">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                    </button>
+                    <abbr class="order-2" title="Delete task" aria-label="Delete task">
+                        <button data-action="task-delete" class="text-danger hover:text-danger/80 transition-all hover:scale-95 active:scale-90" aria-label="Delete Task">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 max-sm:size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                        </button>
+                    </abbr>
                 </div>
             </article>
         </li>
     </template>
 
     <template id="task-status-done-btn">
-        <button class="order-1" data-action="task-status-done" aria-label="Mark Task as Done">
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 256 230">
-                <path class="fill-text" d="M34.404 15.29h23.547V0H34.404a34.3 34.3 0 0 0-18.363 5.306l8.17 12.925a19.04 19.04 0 0 1 10.193-2.941M15.29 34.404c0-2.794.587-5.482 1.744-7.991L3.148 20.012A34.1 34.1 0 0 0 0 34.404v27.064h15.29zM0 76.911h15.29v38.532H0zm205.901-58.194a331 331 0 0 1 13.753-8.257a34.7 34.7 0 0 0-8.941-6.645A34.5 34.5 0 0 0 194.954 0h-13.532v15.29h13.532c4.006 0 7.788 1.211 10.947 3.427M0 130.887h15.29v38.609H0zM73.395 0h38.532v15.291H73.395zm53.975 0h38.609v15.291H127.37zm17.049 214.067h38.532v15.291h-38.532zM214.068 86.85h15.291v38.609h-15.291zm0 54.052h15.291v38.532h-15.291zM15.29 194.954v-10.015H0v10.015a34.44 34.44 0 0 0 17.783 30.129l7.395-13.384a19.14 19.14 0 0 1-9.888-16.745M214.068 61.267v10.14h15.29V48.698c-5.026 3.742-10.128 7.936-15.29 12.569m0 133.687c0 9.585-7.153 17.734-16.639 18.956l1.952 15.165a34.37 34.37 0 0 0 21.331-11.313a34.37 34.37 0 0 0 8.646-22.808v-.076h-15.29zM36.315 214.067h38.609v15.291H36.315zm54.052 0h38.609v15.291H90.367z"/>
-                <path class="fill-primary" d="m35.015 121.738l71.72 71.72S178.455 55.479 256 24.534L253.088 2.69C210.857 19.437 146.782 63.489 99.454 130.839l-49.876-29.488z"/>
-            </svg>
-        </button>
+        <abbr class="order-1" title="Task completed" aria-label="Task completed. Click to mark task as pending">
+            <button class="hover:scale-95 active:scale-90 transition-all" data-action="task-status-done" aria-label="Task completed. Click to mark task as pending.">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-6 max-sm:size-5" viewBox="0 0 256 230">
+                    <path class="fill-text" d="M34.404 15.29h23.547V0H34.404a34.3 34.3 0 0 0-18.363 5.306l8.17 12.925a19.04 19.04 0 0 1 10.193-2.941M15.29 34.404c0-2.794.587-5.482 1.744-7.991L3.148 20.012A34.1 34.1 0 0 0 0 34.404v27.064h15.29zM0 76.911h15.29v38.532H0zm205.901-58.194a331 331 0 0 1 13.753-8.257a34.7 34.7 0 0 0-8.941-6.645A34.5 34.5 0 0 0 194.954 0h-13.532v15.29h13.532c4.006 0 7.788 1.211 10.947 3.427M0 130.887h15.29v38.609H0zM73.395 0h38.532v15.291H73.395zm53.975 0h38.609v15.291H127.37zm17.049 214.067h38.532v15.291h-38.532zM214.068 86.85h15.291v38.609h-15.291zm0 54.052h15.291v38.532h-15.291zM15.29 194.954v-10.015H0v10.015a34.44 34.44 0 0 0 17.783 30.129l7.395-13.384a19.14 19.14 0 0 1-9.888-16.745M214.068 61.267v10.14h15.29V48.698c-5.026 3.742-10.128 7.936-15.29 12.569m0 133.687c0 9.585-7.153 17.734-16.639 18.956l1.952 15.165a34.37 34.37 0 0 0 21.331-11.313a34.37 34.37 0 0 0 8.646-22.808v-.076h-15.29zM36.315 214.067h38.609v15.291H36.315zm54.052 0h38.609v15.291H90.367z"/>
+                    <path class="fill-primary" d="m35.015 121.738l71.72 71.72S178.455 55.479 256 24.534L253.088 2.69C210.857 19.437 146.782 63.489 99.454 130.839l-49.876-29.488z"/>
+                </svg>
+            </button>
+        </abbr>
     </template>
 
     <template id="task-status-pending-btn">
-        <button class="order-1" data-action="task-status-pending" aria-label="Mark Task as Done">
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 256 230">
-                <path class="fill-text" d="M34.404 15.29h23.547V0H34.404a34.3 34.3 0 0 0-18.363 5.306l8.17 12.925a19.04 19.04 0 0 1 10.193-2.941M15.29 34.404c0-2.794.587-5.482 1.744-7.991L3.148 20.012A34.1 34.1 0 0 0 0 34.404v27.064h15.29zM0 76.911h15.29v38.532H0zm205.901-58.194a331 331 0 0 1 13.753-8.257a34.7 34.7 0 0 0-8.941-6.645A34.5 34.5 0 0 0 194.954 0h-13.532v15.29h13.532c4.006 0 7.788 1.211 10.947 3.427M0 130.887h15.29v38.609H0zM73.395 0h38.532v15.291H73.395zm53.975 0h38.609v15.291H127.37zm17.049 214.067h38.532v15.291h-38.532zM214.068 86.85h15.291v38.609h-15.291zm0 54.052h15.291v38.532h-15.291zM15.29 194.954v-10.015H0v10.015a34.44 34.44 0 0 0 17.783 30.129l7.395-13.384a19.14 19.14 0 0 1-9.888-16.745M214.068 61.267v10.14h15.29V48.698c-5.026 3.742-10.128 7.936-15.29 12.569m0 133.687c0 9.585-7.153 17.734-16.639 18.956l1.952 15.165a34.37 34.37 0 0 0 21.331-11.313a34.37 34.37 0 0 0 8.646-22.808v-.076h-15.29zM36.315 214.067h38.609v15.291H36.315zm54.052 0h38.609v15.291H90.367z"/>
-            </svg>
-        </button>
+        <abbr class="order-1" title="Task pending" aria-label="Task pending. Click to mark task as completed">
+            <button data-action="task-status-pending" aria-label="Task pending. Click to mark task as completed">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-6 max-sm:size-5" viewBox="0 0 256 230">
+                    <path class="fill-text" d="M34.404 15.29h23.547V0H34.404a34.3 34.3 0 0 0-18.363 5.306l8.17 12.925a19.04 19.04 0 0 1 10.193-2.941M15.29 34.404c0-2.794.587-5.482 1.744-7.991L3.148 20.012A34.1 34.1 0 0 0 0 34.404v27.064h15.29zM0 76.911h15.29v38.532H0zm205.901-58.194a331 331 0 0 1 13.753-8.257a34.7 34.7 0 0 0-8.941-6.645A34.5 34.5 0 0 0 194.954 0h-13.532v15.29h13.532c4.006 0 7.788 1.211 10.947 3.427M0 130.887h15.29v38.609H0zM73.395 0h38.532v15.291H73.395zm53.975 0h38.609v15.291H127.37zm17.049 214.067h38.532v15.291h-38.532zM214.068 86.85h15.291v38.609h-15.291zm0 54.052h15.291v38.532h-15.291zM15.29 194.954v-10.015H0v10.015a34.44 34.44 0 0 0 17.783 30.129l7.395-13.384a19.14 19.14 0 0 1-9.888-16.745M214.068 61.267v10.14h15.29V48.698c-5.026 3.742-10.128 7.936-15.29 12.569m0 133.687c0 9.585-7.153 17.734-16.639 18.956l1.952 15.165a34.37 34.37 0 0 0 21.331-11.313a34.37 34.37 0 0 0 8.646-22.808v-.076h-15.29zM36.315 214.067h38.609v15.291H36.315zm54.052 0h38.609v15.291H90.367z"/>
+                </svg>
+            </button>
+        </abbr>
     </template>
 
     <footer class="flex justify-center">
